@@ -53,6 +53,8 @@ const signupHandler = (req: Request, res: Response) => {
         return;
       }
       // 3. Create Model instance using req. body
+      // VERIF ADMIN
+      req.body.admin = false;
       const newUser = new UserModel(req.body);
       // 4. Hash password
       newUser.password = UserModel.hashPassword(password);

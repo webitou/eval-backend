@@ -1,2 +1,2 @@
-export * from './populate';
 export * from './user';
+export * from './formation';

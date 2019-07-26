@@ -4,36 +4,26 @@ import {
   Document,
   model as mongooseModel
 } from 'mongoose';
+import { Request } from 'express';
 
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
-
-// Schema property alidators
-export const validateAvatar = (avatar: string): boolean => {
-  return avatar.startsWith('http://') || avatar.startsWith('https://');
-};
-
-// Schema property setters
-export const setLuckyNumber = (value: number): number => {
-  return Math.floor(Math.abs(value));
-};
-
+export interface ITokenPayload { 
+  user_id: string; 
+  admin: boolean 
+}
+export interface IRequestWithPayload extends Request {
+  tokenPayload?: ITokenPayload;
+}
 
 // main interface
 export interface IUser {
   email: string;
   password: string;
-  language: string;
   fullname: string;
-  avatar: string;
-  luckyNumber: number;
-  homeLocation: {
-    lat: Number,
-    long: Number
-  };
-  journeys: string[];
   lastLogin: number;
+  admin: boolean;
 }
 
 // document interface, define custom methods here
@@ -60,47 +50,11 @@ const userSchema = new Schema<IUserDoc>({
     minLength: 59,
     maxLength: 60,
   },
-  language: {
-    type: String,
-    required: true,
-    enum: ['fr', 'ge', 'en', 'it']
-  },
   fullname: {
     type: String,
     required: true,
     minLength: 2,
     maxLength: 100,
-  },
-  avatar: {
-    type: String,
-    required: true,
-    default: 'https://www.gravatar.com/avatar/default',
-    validate: [validateAvatar, 'Avatar must an uri']
-  },
-  luckyNumber: {
-    type: Number,
-    required: true,
-    default: 7,
-    set: setLuckyNumber
-  },
-  homeLocation: {
-    type: {
-      lat: {
-        type: Number,
-        required: true,
-      },
-      long: {
-        type: Number,
-        required: true
-      }
-    },
-    required: true,
-    default: { lat: 0, long: 0 }
-  },
-  journeys: {
-    type: [String], // !!! <-- array type definition - String[] wont compile
-    required: true,
-    default: []
   },
   lastLogin: {
     type: Number,
@@ -109,6 +63,11 @@ const userSchema = new Schema<IUserDoc>({
     default: Date.now // !!!! !== of Date.now(), Date.now() give to value once at execution time
                       // With Date.now, we assign a function, which will be callede each time we
                       // need the default value
+  },
+  admin: {
+    type: Boolean,
+    required: true,
+    default: false,
   }
 });
 // index used for insert/update to ensure uniquness of email address
@@ -134,7 +93,8 @@ userSchema.method('comparePassword', function (this: IUserDoc, password: string)
 
 userSchema.method('getToken', function (this: IUserDoc) {
   return jwt.sign({
-      userId: this._id.toString()
+      userId: this._id.toString(),
+      admin: this.admin,
     },
     process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
