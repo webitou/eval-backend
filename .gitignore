@@ -1,5 +1,15 @@
+# Dependency directory
 node_modules
+
+# Ignore built ts files
 dist
+
+# API keys and secrets
 .env
+
 .vscode
 dump
+
+# OS metadata
+.DS_Store
+Thumbs.db

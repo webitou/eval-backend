@@ -12,7 +12,7 @@ import * as dotenv from 'dotenv';
 import { notFoundMiddleware, errorMiddleware } from './middlewares/error';
 import { Database } from './database';
 
-// load .env variables into process.env
+// LOAD .env VARIABLES INTO process.env
 dotenv.config();
 
 const PORT = +process.env.PORT || +process.env.EXPRESS_PORT;
@@ -27,33 +27,34 @@ database
   const app = express();
 
   // MIDDLEWARES
-    // use bodyParser to parse json
+    // USE BODYPARSER TO PARSE JSON
   app.use(bodyParser.json())
-    // use Helmet to help secure Express apps with various HTTP headers
+    // USE HELMET TO HELP SECURE EXPRESS APPS WITH VARIOUS HTTP HEADERS
     .use(helmet())
-    // use morgan to log requests to the console
+    // USE MORGAN TO LOG REQUESTS TO THE CONSOLE
     .use(morgan('dev'))
-    // use HPP to protect against HTTP Parameter Pollution attacks
+    // USE HPP TO PROTECT AGAINST HTTP PARAMETER POLLUTION ATTACKS
     .use(hpp())
-    // enable gzip compression
+    // ENABLE GZIP COMPRESSION
     .use(compress())
-    // cors domaine origin
+    // CORS DOMAINE ORIGIN
     .use(cors({optionsSuccessStatus: 200}))
-    // parse cookies
+    // PARSE COOKIES
     .use(cookieParser());
 
 
   // ROUTES
   const apiRouter = express.Router();
-  app.use('/api/v1', apiRouter);
+  app.use( '/api/v1', apiRouter );
 
-  // root routes
-  apiRouter.use('/', rootRouter);
+  // ROOT ROUTES
+  apiRouter.use( '/', rootRouter );
 
-  // auth routes
-  apiRouter.use('/auth', authRouter);
+  // AUTH ROUTES
+  apiRouter.use( '/auth', authRouter );
 
-  apiRouter.use('/formation', formationRouter);
+  // FORMATION ROUTES
+  apiRouter.use( '/formation', formationRouter );
 
   // HTTP REQUEST ERRORS
   app.use(errorMiddleware)
@@ -64,39 +65,39 @@ database
 
   // EXPRESS SERVER ERRORS
   const closeServer = () => {
-    console.log('close express server');
+    console.log( 'close express server' );
     server.close();
-    return database.disconnect().then(() => {}).catch(() => {});
+    return database.disconnect().then( () => {} ).catch( () => {} );
   };
 
-  server.on('error', (err: any) => {
-    switch (err.code) {
+  server.on( 'error', ( err: any ) => {
+    switch ( err.code ) {
       case 'EACCES':
-          console.error(`${HOST}:${PORT} requires elevated privileges`);
+          console.error( `${HOST}:${PORT} requires elevated privileges` );
           break;
       case 'EADDRINUSE':
-          console.error(`${HOST}:${PORT} is already in use`);
+          console.error( `${HOST}:${PORT} is already in use` );
           break;
       default:
-          console.error('Error connecting ' + err);
+          console.error( 'Error connecting ' + err );
           break;
     }
     closeServer()
-      .then(_ => process.exit(1))
-      .catch(_ => process.exit(1));
+      .then(_ => process.exit( 1 ) )
+      .catch(_ => process.exit( 1 ) );
   });
-  server.on('listening', () => {
-    console.log(`Server listening on ${HOST}:${PORT}`);
+  server.on( 'listening', () => {
+    console.log( `Server listening on ${HOST}:${PORT}` );
   });
 
   // PROCESS EVENTS
   // gracefully stop the server in case of SIGINT (Ctrl + C) or SIGTERM (Process stopped)
-  process.on('SIGTERM', closeServer);
-  process.on('SIGINT', closeServer);
+  process.on( 'SIGTERM', closeServer );
+  process.on( 'SIGINT', closeServer );
 
 })
-.catch(err => {
-  console.error('Database connection error');
-  console.error(err);
-  process.exit(1);
+.catch( err => {
+  console.error( 'Database connection error' );
+  console.error( err );
+  process.exit( 1 );
 });
