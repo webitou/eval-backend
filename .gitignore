@@ -1,5 +1,6 @@
 # Dependency directory
 node_modules
+_COMMANDES
 
 # Ignore built ts files
 dist
