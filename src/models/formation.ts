@@ -8,6 +8,10 @@ import {
   // MAIN INTERFACE
   export interface IFormation {
     title: string;
+    nbformation: string;
+    dateStart: Date;
+    dateEnd: Date;
+    dayWeek: string;
   }
   
   // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
@@ -31,6 +35,19 @@ import {
     nbformation: {
       type: String,
       required: false,
+    },
+    dateStart: {
+      type: String,
+      required: true,
+    },
+    dateEnd: {
+      type: String,
+      required: true,
+    },
+    dayWeek: {
+      type: String,
+      required: true,
+      enum: [ 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi' ]
     }
   });
 
