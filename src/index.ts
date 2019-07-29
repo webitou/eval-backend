@@ -7,7 +7,7 @@ import * as hpp from 'hpp';
 import * as cors from 'cors';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
-import { authRouter, rootRouter, formationRouter } from './routers';
+import { authRouter, rootRouter, formationRouter, evaluationRouter } from './routers';
 import * as dotenv from 'dotenv';
 import { notFoundMiddleware, errorMiddleware } from './middlewares/error';
 import { Database } from './database';
@@ -55,6 +55,9 @@ database
 
   // FORMATION ROUTES
   apiRouter.use( '/formation', formationRouter );
+
+  // EVAL ROUTES
+  apiRouter.use( '/eval', evaluationRouter );
 
   // HTTP REQUEST ERRORS
   app.use(errorMiddleware)
