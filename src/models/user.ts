@@ -9,6 +9,9 @@ import { Request } from 'express';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
+import { ValidateInteger } from '../helpers';
+import { formationSchema } from './formation';
+
 export interface ITokenPayload {
   user_id: string;
   admin: boolean;
@@ -24,6 +27,13 @@ export interface IUser {
   fullname: string;
   lastLogin: number;
   admin: boolean;
+  course: {
+    reference: String,
+    title: String,
+    dateStart: Date,
+    dateEnd: Date,
+    dayWeek: string
+  };
 }
 
 // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
@@ -68,6 +78,11 @@ const userSchema = new Schema<IUserDoc>({
     type: Boolean,
     required: true,
     default: false,
+  },
+  course: {
+    type: [ formationSchema ],
+    required: true,
+    default: []
   }
 });
 
