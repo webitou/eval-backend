@@ -31,6 +31,8 @@ export const httpError401 = httpError(401);
 
 export const httpError403 = httpError(403);
 
+export const httpError404 = httpError(404);
+
 
 export const mongoError = (err, res: Response) => {
   if (err instanceof Error.ValidationError)
