@@ -6,7 +6,7 @@ import {
 } from 'mongoose';
 import { Request } from 'express';
 
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
 export interface ITokenPayload { 

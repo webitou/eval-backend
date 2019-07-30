@@ -9,20 +9,20 @@ import {
 
 export const authRouter = express.Router();
 
-const signinHandler = (req: Request, res: Response) => {
+const signinHandler = ( req: Request, res: Response ) => {
   const { email, password } = req.body;
 
   // 1. Validate missing data
-  if (!email || !password)
-    return res.status(401).send(httpError401('Email or password are missing'));
+  if ( !email || !password )
+    return res.status( 401 ).send( httpError401( 'Email or password are missing' ) );
 
   // 2. Get user by email
   UserModel
-    .findOne({ email })
-    .then(user => {
+    .findOne( { email } )
+    .then( user => {
       // and 3. validate password
-      if (!user || !user.comparePassword(password)) {
-        res.status(401).send(httpError401('Wrong email or password'));
+      if ( !user || !user.comparePassword( password ) ) {
+        res.status( 401 ).send( httpError401( 'Wrong email or password' ) );
         return;
       }
       // 4. Update lastLogin
@@ -32,22 +32,22 @@ const signinHandler = (req: Request, res: Response) => {
         { new: true, runValidators: true } // update options: run validations and return modified document
       )
       // 5. User successfully logged, return user and token
-      .then(user => res.send({ user, token: user.getToken(), error: false }));
+      .then( user => res.send( { user, token: user.getToken(), error: false } ) );
     })
-    .catch(err => mongoError(err, res));
+    .catch( err => mongoError( err, res ) );
 };
-authRouter.post('/signin', signinHandler);
+authRouter.post( '/signin', signinHandler );
 
-const signupHandler = (req: Request, res: Response) => {
+const signupHandler = ( req: Request, res: Response ) => {
   // 1. Validate missing user data from req.body
   const { email, password, language, fullname } = req.body;
-  if (!email || !password || !language || !fullname)
-    return res.status(400).send(httpError400('All fields are required'));
+  if ( !email || !password || !language || !fullname )
+    return res.status( 400 ).send( httpError400( `All fields are required ${email}, ${password}, ${language}, ${fullname}` ) );
 
   // 2. Validate uniqueness of email
   UserModel
-    .findOne({ email })
-    .then(user => {
+    .findOne( { email } )
+    .then( user => {
       if (user) {
         res.status(400).send(httpError400('User already exists'));
         return;
