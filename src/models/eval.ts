@@ -13,12 +13,10 @@ import {
   
   // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
   export interface IEvalDoc extends Document, IEval {
-    
   }
   
   // MODEL INTERFACE, DEFINE CUSTOM STATIC METHODS HERE
   interface IEvalModel extends Model<IEvalDoc> {
-    
   }
   
   // SCHEMA DEFINITION
@@ -32,10 +30,10 @@ import {
     type: {
       type: String,
       required: false,
-      enum: [ 'material', 'teacher', 'documentation' ]
+      enum: [ 'material', 'teacher', 'documentation', 'center' ]
     }
-  });
+  } );
+  evalSchema.index( { question: 1 }, { unique: true } );
 
   // MODEL GENERATION
-  export const EvalModel = mongooseModel<IEvalDoc, IEvalModel>('evals', evalSchema);
-  
+  export const EvalModel = mongooseModel< IEvalDoc, IEvalModel >( 'evals', evalSchema );
