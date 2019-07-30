@@ -5,7 +5,7 @@ import {
     model as mongooseModel
   } from 'mongoose';
 import { ValidateInteger } from '../helpers';
-  
+
   // MAIN INTERFACE
   export interface IFormation {
     title: string;
@@ -14,19 +14,19 @@ import { ValidateInteger } from '../helpers';
     dateEnd: Date;
     dayWeek: string;
   }
-  
+
   // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
   export interface IFormationDoc extends Document, IFormation {
-    
+
   }
-  
+
   // MODEL INTERFACE, DEFINE CUSTOM STATIC METHODS HERE
-  interface IFormationModel extends Model<IFormationDoc> {
-    
+  interface IFormationModel extends Model< IFormationDoc > {
+
   }
-  
+
   // SCHEMA DEFINITION
-  const formationSchema = new Schema<IFormationDoc>({
+  const formationSchema = new Schema< IFormationDoc >( {
     title: {
       type: String,
       required: true,

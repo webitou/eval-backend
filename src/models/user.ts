@@ -9,15 +9,15 @@ import { Request } from 'express';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
-export interface ITokenPayload { 
-  user_id: string; 
-  admin: boolean 
+export interface ITokenPayload {
+  user_id: string;
+  admin: boolean;
 }
 export interface IRequestWithPayload extends Request {
   tokenPayload?: ITokenPayload;
 }
 
-// main interface
+// MAIN INTERFACE
 export interface IUser {
   email: string;
   password: string;
@@ -26,18 +26,18 @@ export interface IUser {
   admin: boolean;
 }
 
-// document interface, define custom methods here
+// DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
 export interface IUserDoc extends Document, IUser {
   comparePassword(password: string): boolean;
   getToken(): string;
 }
 
-// model interface, define custom static methods here
+// MODEL INTERFACE, DEFINE CUSTOM STATIC METHODS HERE
 interface IUserModel extends Model<IUserDoc> {
   hashPassword(password: string): string;
 }
 
-// schema definition
+// SCHEMA DEFINITION
 const userSchema = new Schema<IUserDoc>({
   email: {
     type: String,
@@ -70,54 +70,49 @@ const userSchema = new Schema<IUserDoc>({
     default: false,
   }
 });
-// index used for insert/update to ensure uniquness of email address
+
+// INDEX USED FOR INSERT/UPDATE TO ENSURE UNIQUNESS OF EMAIL ADDRESS
 userSchema.index({ email: 1 }, { unique: true });
-// index used for search by email, since we search for exact value
+// INDEX USED FOR SEARCH BY EMAIL, SINCE WE SEARCH FOR EXACT VALUE
 userSchema.index({ email: 'hashed' });
 
-// Model custom methods
-//
-// this is an instance IMovieDoc
-//
-// allow to do:
-// const movie = new MovieModel({...});
-// movie.setLanguage('Français');
-userSchema.method('comparePassword', function (this: IUserDoc, password: string) {
+// MODEL CUSTOM METHODS
+// THIS IS AN INSTANCE IUserDoc
+userSchema.method( 'comparePassword', function ( this: IUserDoc, password: string ) {
   try {
-    return bcrypt.compareSync(password, this.password);
+    return bcrypt.compareSync( password, this.password );
   }
-  catch (e) { }
+  catch ( e ) { }
   return false;
-});
+} );
 
 
-userSchema.method('getToken', function (this: IUserDoc) {
-  return jwt.sign({
+userSchema.method( 'getToken', function ( this: IUserDoc ) {
+  return jwt.sign( {
       userId: this._id.toString(),
       admin: this.admin,
     },
     process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
-  });
-});
+  } );
+} );
 
-// override toJSON to remove password before sending response
-userSchema.method('toJSON', function (this: IUserDoc) {
+// OVERRIDE TOJSON TO REMOVE PASSWORD BEFORE SENDING RESPONSE
+userSchema.method( 'toJSON', function ( this: IUserDoc ) {
   const obj = this.toObject();
   delete obj.password;
   return obj;
-});
+} );
 
-// Model custom static methods
+// MODEL CUSTOM STATIC METHODS
 //
 // cannot use this here
 //
 // allow to do:
 // MovieModel.staticMethod();
-userSchema.static('hashPassword', (password: string): string => {
-  return bcrypt.hashSync(password, +process.env.BCRYPT_ROUNDS);
-});
+userSchema.static( 'hashPassword', ( password: string ): string => {
+  return bcrypt.hashSync( password, +process.env.BCRYPT_ROUNDS );
+} );
 
-
-// model generation
-export const UserModel = mongooseModel<IUserDoc, IUserModel>('users', userSchema);
+// MODEL GENERATION
+export const UserModel = mongooseModel< IUserDoc, IUserModel >( 'users', userSchema );

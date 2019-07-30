@@ -1,12 +1,12 @@
 import { Error } from 'mongoose';
 import { Response } from 'express';
 
-const httpError = (status: number, msg = '') => (message = msg, err = undefined) => ({
+const httpError = ( status: number, msg = '' ) => ( message = msg, err = undefined ) => ( {
   error: true,
   err,
   status,
   message
-});
+} );
 
 // const httpErrorExplained = (status) => {
 //
@@ -23,20 +23,20 @@ const httpError = (status: number, msg = '') => (message = msg, err = undefined)
 //   return httpErrorFunction;
 //
 // };
-export const httpError500 = httpError(500, 'Internal Server Error');
+export const httpError500 = httpError( 500, 'Internal Server Error' );
 
-export const httpError400 = httpError(400);
+export const httpError400 = httpError( 400 );
 
-export const httpError401 = httpError(401);
+export const httpError401 = httpError( 401 );
 
-export const httpError403 = httpError(403);
+export const httpError403 = httpError( 403 );
 
-export const httpError404 = httpError(404);
+export const httpError404 = httpError( 404 );
 
-
-export const mongoError = (err, res: Response) => {
-  if (err instanceof Error.ValidationError)
-    res.status(400).send(httpError400('Validation error', err));
+// MANAGE ERRORS MONGO
+export const mongoError = ( err, res: Response ) => {
+  if ( err instanceof Error.ValidationError )
+    res.status( 400 ).send( httpError400( 'Validation error', err ) );
   else
-    res.status(500).send(httpError500(undefined, err));
+    res.status( 500 ).send( httpError500( undefined, err ) );
 };

@@ -2,8 +2,6 @@ import { Response } from 'express';
 import * as  jwt from 'jsonwebtoken';
 import { IRequestWithPayload, ITokenPayload } from '../models';
 
-
-
 export const authMiddleware = ( req: IRequestWithPayload, res: Response, next ) => {
   const token = req.header( 'Authorization' );
 

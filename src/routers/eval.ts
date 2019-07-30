@@ -38,16 +38,15 @@ const getByIdHandler = ( req: Request, res: Response ) => {
     .catch(err => httpError500( `Cannot retrieve evaluation with id ${ req.params.id }`, err ) );
 };
 // evaluationRouter.get('/:id', authMiddleware, getByIdHandler);
-evaluationRouter.get( '/:id', getByIdHandler );
-
+evaluationRouter.get( '/:id', getByIdHandler ); // PROVISOIR
 
 const createHandler =  ( req: Request, res: Response ) => {
   // res.send( { message: 'Welcome to create eval API' } );
-  // 1. Validate missing formation data from req.body
+  // 1. VALIDATE MISSING FORMATION DATA FROM req.body
   const { question, type } = req.body;
   if ( !question || !type )
     return res.status( 400 ).send( httpError400( 'All fields are required' ) );
-  // 2. Validate uniqueness of reference
+  // 2. VALIDATE UNIQUENESS OF QUESTION
     EvalModel
       .findOne( { question } )
       .then( evals => {
@@ -55,15 +54,14 @@ const createHandler =  ( req: Request, res: Response ) => {
           res.status( 400 ).send( httpError400( 'Formation already exists' ) );
           return;
         }
-  // 3. Create Model instance using req. body
+  // 3. CREATE MODEL INSTANCE USING req.body
   // VERIF ADMIN
         req.body.admin = false;
         const newEvaluation = new EvalModel( req.body );
-  // 4. Save and manage validation errors
+  // 4. SAVE AND MANAGE VALIDATION ERRORS
         return newEvaluation.save();
       })
       .catch( err => mongoError( err, res ) );
 };
 // evaluationRouter.post( '/', authMiddleware, adminMiddleware, createHandler );
-evaluationRouter.post( '/', createHandler );
-
+evaluationRouter.post( '/', createHandler ); // PROVISOIR

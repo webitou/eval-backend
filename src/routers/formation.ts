@@ -21,7 +21,7 @@ const rootHandler = ( req: Request, res: Response ) => {
     .catch(err => httpError500('Cannot retrieve formations', err));
 };
 // formationRouter.get('/', authMiddleware, rootHandler);
-formationRouter.get( '/', rootHandler );
+formationRouter.get( '/', rootHandler ); // PROVISOIR
 
 const getByIdHandler = ( req: Request, res: Response ) => {
   FormationModel
@@ -38,16 +38,15 @@ const getByIdHandler = ( req: Request, res: Response ) => {
     .catch(err => httpError500( `Cannot retrieve formation with id ${ req.params.id }`, err ) );
 };
 // formationRouter.get('/:id', authMiddleware, getByIdHandler);
-formationRouter.get( '/:id', getByIdHandler );
+formationRouter.get( '/:id', getByIdHandler ); // PROVISOIR
 
 
 const createHandler =  ( req: Request, res: Response ) => {
-  // 1. Validate missing formation data from req.body
+  // 1. VALIDATE MISSING FORMATION DATA FROM req.body
     const { title, reference, dateStart, dateEnd, dayWeek } = req.body;
     if (!title || !reference || !dateStart || !dateEnd || !dayWeek )
       return res.status( 400 ).send( httpError400( 'All fields are required' ) );
-  // 2. Validate uniqueness of reference
-
+  // 2. VALIDATE UNIQUENESS OF REFERENCE
   FormationModel
     .findOne( { reference } )
     .then( formations => {
@@ -55,14 +54,14 @@ const createHandler =  ( req: Request, res: Response ) => {
         res.status( 400 ).send( httpError400( 'Formation already exists' ) );
         return;
       }
-  // 3. Create Model instance using req. body
+  // 3. CREATE MODEL INSTANCE USING req.body
   // VERIF ADMIN
       req.body.admin = false;
       const newFormation = new FormationModel( req.body );
-  // 4. Save and manage validation errors
+  // 4. SAVE AND MANAGE VALIDATION ERRORS
       return newFormation.save();
     })
     .catch( err => mongoError( err, res ) );
 };
 // formationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
-formationRouter.post( '/', createHandler );
+formationRouter.post( '/', createHandler ); // PROVISOIR
