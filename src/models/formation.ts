@@ -4,11 +4,12 @@ import {
     Document,
     model as mongooseModel
   } from 'mongoose';
+import { ValidateInteger } from '../helpers';
   
   // MAIN INTERFACE
   export interface IFormation {
     title: string;
-    nbformation: string;
+    reference: string;
     dateStart: Date;
     dateEnd: Date;
     dayWeek: string;
@@ -30,27 +31,29 @@ import {
       type: String,
       required: true,
       minlength: 1,
-      maxlength:200
+      maxlength: 200,
     },
-    nbformation: {
+    reference: {
       type: String,
       required: false,
     },
     dateStart: {
-      type: String,
+      type: Number,
       required: true,
     },
     dateEnd: {
-      type: String,
+      type: Number,
       required: true,
     },
     dayWeek: {
-      type: String,
+      type: Number,
       required: true,
-      enum: [ 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi' ]
+      min: 0,
+      max: 6,
+      validate: [ ValidateInteger, 'Day week must be an interger' ]
     }
   });
+  formationSchema.index( { reference: 1 }, { unique: true } );
 
   // MODEL GENERATION
-  export const FormationModel = mongooseModel<IFormationDoc, IFormationModel>('formations', formationSchema);
-  
+  export const FormationModel = mongooseModel< IFormationDoc, IFormationModel >( 'formations', formationSchema );
