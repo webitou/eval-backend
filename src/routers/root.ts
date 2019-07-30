@@ -8,7 +8,7 @@ export const rootRouter = express.Router();
 
 
 const rootHandler = (req: Request, res: Response) => {
-  res.send({ message: 'Welcome to my API' });
+  res.send({ message: 'Welcome to my API - Eval-Formation' });
 };
 rootRouter.get('/', rootHandler);
 
