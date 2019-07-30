@@ -13,7 +13,7 @@
     "mongo:backup": "mongodump --db eval",
     "mongo:restore": "mongorestore --db eval --drop ./dump/eval"
   },
-  "author": "",
+  "author": "Axel FILLETTAZ",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
