@@ -13,7 +13,7 @@ import { escapeRegExp } from '../helpers/regexp';
 
 export const formationRouter = express.Router();
 
-// ACCESS FORMATIONS
+// LIST FORMATIONS SEARCH
 const searchHandler = ( req: Request, res: Response ) => {
   const searchs = req.query.q.split(' ').filter( str => str );
   const mongoSearch = {};

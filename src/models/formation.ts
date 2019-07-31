@@ -12,7 +12,7 @@ import { ValidateInteger } from '../helpers';
     reference: string;
     dateStart: Date;
     dateEnd: Date;
-    dayWeek: string;
+    dayWeek: number;
   }
 
   // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
@@ -26,7 +26,7 @@ import { ValidateInteger } from '../helpers';
   }
 
   // SCHEMA DEFINITION
-  const formationSchema = new Schema< IFormationDoc >( {
+ export const formationSchema = new Schema< IFormationDoc >( {
     title: {
       type: String,
       required: true,
@@ -38,11 +38,11 @@ import { ValidateInteger } from '../helpers';
       required: false,
     },
     dateStart: {
-      type: Number,
+      type: Date,
       required: true,
     },
     dateEnd: {
-      type: Number,
+      type: Date,
       required: true,
     },
     dayWeek: {
@@ -54,6 +54,3 @@ import { ValidateInteger } from '../helpers';
     }
   });
   formationSchema.index( { reference: 1 }, { unique: true } );
-
-  // MODEL GENERATION
-  export const FormationModel = mongooseModel< IFormationDoc, IFormationModel >( 'formations', formationSchema );
