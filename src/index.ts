@@ -7,10 +7,11 @@ import * as hpp from 'hpp';
 import * as cors from 'cors';
 import * as compress from 'compression';
 import * as cookieParser from 'cookie-parser';
-import { authRouter, rootRouter, evaluationRouter, userRouter } from './routers';
+import { authRouter, rootRouter, evaluationRouter, userRouter, mgmFormationRouter } from './routers';
 import * as dotenv from 'dotenv';
 import { notFoundMiddleware, errorMiddleware } from './middlewares/error';
 import { Database } from './database';
+import { formationRouter } from './routers/formation';
 
 // LOAD .env VARIABLES INTO process.env
 dotenv.config();
@@ -42,29 +43,92 @@ database
     // PARSE COOKIES
     .use(cookieParser());
 
-
-  // ROUTES
+/*******************************************************************
+*******  ROUTES                                              *******
+********************************************************************/
   const apiRouter = express.Router();
   app.use( '/api/v1', apiRouter );
 
-  // ROOT ROUTES
+/*******************************************************************
+*******  ROOT ROUTES                                         *******
+********************************************************************/
   apiRouter.use( '/', rootRouter );
 
-  // AUTH ROUTES
+/*******************************************************************
+*******  AUTH ROUTES                                         *******
+********************************************************************/
   apiRouter.use( '/auth', authRouter );
+  // ADD USER   - POST/ http://localhost:8080/api/v1/auth/signup
+          // {
+          //   "fullname": "xxxxxxxxxxx",
+          //   "email": "xxxxxxxx@xxxxxx.xx",
+          //   "language": "fr",
+          //   "password": "xxxxxxxx"
+          // }
+  // LOGIN USER - POST/ http://localhost:8080/api/v1/auth/signin
+          // {
+          //   "email": "xxxxxx@xxxxxx.xx",
+          //   "password": "xxxxxxxx"
+          // }
 
-  // EVAL ROUTES
+/*******************************************************************
+*******  EVAL ROUTES                                         *******
+********************************************************************/
   apiRouter.use( '/eval', evaluationRouter );
+  // VIEW EVALS   - GET/ http://localhost:8080/api/v1/eval/
+  // GET ID       - GET/ http://localhost:8080/api/v1/eval/[EvalId]
+  // ADD EVAL     - POST/ http://localhost:8080/api/v1/eval/
+  // UPDATE EVAL  -
+  // DELETE EVAL  -
 
-  // USER ROUTES
+/*******************************************************************
+*******  MANAGE FORMATION ROUTE                              *******
+********************************************************************/
+  apiRouter.use( '/mgm-formation', mgmFormationRouter );
+  // VIEW FORMS   - GET/ http://localhost:8080/api/v1/mgm-formation
+  // GET ID       - GET/ http://localhost:8080/api/v1/mgm-formation/[FormId]
+  // ADD FORM     - POST/ http://localhost:8080/api/v1/mgm-formation/
+          // {
+          //   "title": "formation title",
+          //   "reference": "reference formation",
+          //   "dateStart": "2019-08-04",
+          //   "dateEnd": "2019-08-28",
+          //   "dayWeek": 2
+          // }
+  // UPDATE FORM  -
+  // DELETE FORM  -
+
+/*******************************************************************
+*******  USER FORMATION ROUTES                               *******
+********************************************************************/
   apiRouter.use( '/users', userRouter );
+  // ADD FORMATION - POST/ http://localhost:8080/api/v1/users/[UserId]/formations
+          // {
+          //   "title": "formation title",
+          //   "reference": "reference formation",
+          //   "dateStart": "2019-08-04",
+          //   "dateEnd": "2019-08-28",
+          //   "dayWeek": 2
+          // }
+  // UPDATE FORM   - PUT/  http://localhost:8080/api/v1/users/[UserId]/formations/[FormId]
+          // {
+          //   "title": "new formation title",
+          // }
+  // DELETE FORM   - PULL/ http://localhost:8080/api/v1/users/[UserId]/formations/[FormId]
+
+/*******************************************************************
+*******  SEARCH FORMATION                                    *******
+********************************************************************/
+  apiRouter.use( '/formation', formationRouter );
+  // SEARCH FORMS  - GET/ http://localhost:8080/api/v1/formation?q=
+
 
   // HTTP REQUEST ERRORS
-  app.use(errorMiddleware)
-     .use(notFoundMiddleware);
+  app.use( errorMiddleware )
+     .use( notFoundMiddleware );
 
   // RUN EXPRESS SERVER
-  const server = app.listen(PORT, HOST);
+  const server = app.listen( PORT, HOST );
 
   // EXPRESS SERVER ERRORS
   const closeServer = () => {
