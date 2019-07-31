@@ -20,28 +20,30 @@ const PORT = +process.env.PORT || +process.env.EXPRESS_PORT;
 const HOST = process.env.HOST || process.env.EXPRESS_HOST;
 
 const MONGO_URI = process.env.MONGO_URI;
-const database: Database = new Database(MONGO_URI);
+const database: Database = new Database( MONGO_URI );
 database
 .connect()
 .then(_ => {
   // APP
   const app = express();
 
-  // MIDDLEWARES
+/*******************************************************************
+*******  MIDDLEWARES                                         *******
+********************************************************************/
     // USE BODYPARSER TO PARSE JSON
-  app.use(bodyParser.json())
+  app.use( bodyParser.json() )
     // USE HELMET TO HELP SECURE EXPRESS APPS WITH VARIOUS HTTP HEADERS
-    .use(helmet())
+    .use( helmet() )
     // USE MORGAN TO LOG REQUESTS TO THE CONSOLE
-    .use(morgan('dev'))
+    .use( morgan( 'dev' ) )
     // USE HPP TO PROTECT AGAINST HTTP PARAMETER POLLUTION ATTACKS
-    .use(hpp())
+    .use( hpp() )
     // ENABLE GZIP COMPRESSION
-    .use(compress())
+    .use( compress() )
     // CORS DOMAINE ORIGIN
-    .use(cors({optionsSuccessStatus: 200}))
+    .use( cors( { optionsSuccessStatus: 200 } ) )
     // PARSE COOKIES
-    .use(cookieParser());
+    .use( cookieParser() );
 
 /*******************************************************************
 *******  ROUTES                                              *******
