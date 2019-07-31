@@ -9,6 +9,9 @@ import {
 
 export const authRouter = express.Router();
 
+/*******************************************************************
+*******  LOGIN USER                                          *******
+********************************************************************/
 const signinHandler = ( req: Request, res: Response ) => {
   const { email, password } = req.body;
 
@@ -38,12 +41,14 @@ const signinHandler = ( req: Request, res: Response ) => {
 };
 authRouter.post( '/signin', signinHandler );
 
+/*******************************************************************
+*******  CREATE NEW USER                                     *******
+********************************************************************/
 const signupHandler = ( req: Request, res: Response ) => {
   // 1. VALIDATE MISSING USER DATA FROM req.body
-  const { email, password, language, fullname } = req.body;
+  const { email, password, language, fullname, course } = req.body;
   if ( !email || !password || !language || !fullname )
     return res.status( 400 ).send( httpError400( `All fields are required` ) );
-
   // 2. VALIDATE UNIQUENESS OF EMAIL
   UserModel
     .findOne( { email } )
