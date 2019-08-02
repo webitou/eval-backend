@@ -32,7 +32,8 @@ export interface IUser {
     title: String,
     dateStart: Date,
     dateEnd: Date,
-    dayWeek: string
+    dayWeek: string,
+    confirm: boolean   // The administrator must confirm for the user to be able to make the evaluation
   };
 }
 
