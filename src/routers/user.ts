@@ -12,7 +12,7 @@ import {
 export const userRouter = express.Router();
 
 /*******************************************************************
-*******  LIST A TRAINING FROM A USER                         *******
+*******  ADD A TRAINING FROM A USER                          *******
 ********************************************************************/
 userRouter.post( '/:id/formations', ( req: Request, res: Response ) => {
   const userId = Types.ObjectId( req.params.id );
