@@ -95,29 +95,19 @@ const updateHandler =  ( req: Request, res: Response ) => {
            .catch( err => mongoError( err, res ) );
 };
 // formationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
-mgmFormationRouter.post( '/mgm-formation/:id', updateHandler ); // PROVISOIR
+mgmFormationRouter.post( '/:id', updateHandler ); // PROVISOIR
 
 /*******************************************************************
-*******  DELETE TRAINING                NOK                     *******
+*******  DELETE TRAINING                                     *******
 ********************************************************************/
-const deleteHandler =  ( req: Request, res: Response ) => {
+mgmFormationRouter.delete( '/:id', ( req: Request, res: Response ) => {
+
   const formId = Types.ObjectId( req.params.id );
-
+  // const formId = '5d3eb79394c95443e1b4340f';
   console.log( formId );
-  // MgmFormationModel.deleteOne( { 'formations._id': formId },
-  //                   { $pull: { formations: { _id: formId }} },
-  //                   { new: true, runValidators: true } )
-  //          .then( ( formations ) => res.send( { formations } ) )
-  //          .catch( err => mongoError( err, res ) );
-};
-// formationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
-mgmFormationRouter.delete( '/mgm-formation/:id', deleteHandler ); // PROVISOIR
 
-// DELETE A TRAINING 
-// mgmFormationRouter.delete( '/mgm-formation/:id', ( req: Request, res: Response ) => {
-//   const formId = Types.ObjectId( req.params.fid );
-
-//   MgmFormationModel.findByIdAndRemove( { 'formations._id': formId } )
-//            .then( ( formation ) => res.send( { formation } ) )
-//            .catch( err => mongoError( err, res ) );
-// } );
+  MgmFormationModel.deleteOne( { _id: formId } )
+      .then( ( formations ) => res.send( { formations } ) )
+      .catch( err => mongoError( err, res ) );
+      console.log( 'Deleted formation' );
+});

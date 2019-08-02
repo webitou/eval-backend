@@ -12,7 +12,7 @@ export interface IMgmFormation {
   reference: string;
   dateStart: Date;
   dateEnd: Date;
-  dayWeek: string;
+  dayWeek: number;
 }
 
 // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
@@ -38,11 +38,11 @@ const mgmFormationSchema = new Schema< IMgmFormationDoc >( {
     required: false,
   },
   dateStart: {
-    type: Number,
+    type: Date,
     required: true,
   },
   dateEnd: {
-    type: Number,
+    type: Date,
     required: true,
   },
   dayWeek: {
