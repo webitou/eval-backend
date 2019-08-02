@@ -9,7 +9,6 @@ import { Request } from 'express';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
-import { ValidateInteger } from '../helpers';
 import { formationSchema } from './formation';
 
 export interface ITokenPayload {
