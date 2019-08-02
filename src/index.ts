@@ -80,8 +80,16 @@ database
   // VIEW EVALS   - GET/ http://localhost:8080/api/v1/eval/
   // GET ID       - GET/ http://localhost:8080/api/v1/eval/[EvalId]
   // ADD EVAL     - POST/ http://localhost:8080/api/v1/eval/
-  // UPDATE EVAL  -
-  // DELETE EVAL  -
+          // {
+          //   "question": "Question d'évaluation",
+          //   "type": "[material], [teacher], [documentation], [center]"
+          // }
+  // UPDATE EVAL  - POST/ http://localhost:8080/api/v1/eval/[EvalId]
+          // {
+          //   "question": "Question d'évaluation",
+          //   "type": "[material], [teacher], [documentation], [center]"
+          // }
+  // DELETE EVAL  - DELETE/ http://localhost:8080/api/v1/eval/[EvalId]
 
 /*******************************************************************
 *******  MANAGE FORMATION ROUTE                              *******
@@ -97,8 +105,15 @@ database
           //   "dateEnd": "2019-08-28",
           //   "dayWeek": 2
           // }
-  // UPDATE FORM  -
-  // DELETE FORM  -
+  // UPDATE FORM  - POST/ http://localhost:8080/api/v1/mgm-formation/[FormId]
+          // {
+          //   "title": "formation title",
+          //   "reference": "reference formation",
+          //   "dateStart": "2019-08-04",
+          //   "dateEnd": "2019-08-28",
+          //   "dayWeek": 2
+          // }
+  // DELETE FORM  - DELETE/ http://localhost:8080/api/v1/mgm-formation/[FormId]
 
 /*******************************************************************
 *******  USER FORMATION ROUTES                               *******

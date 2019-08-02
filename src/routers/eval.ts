@@ -13,7 +13,9 @@ import { EvalModel } from '../models';
 
 export const evaluationRouter = express.Router();
 
-// DISPLAY EVALUATION LIST
+/*******************************************************************
+*******  DISPLAY EVALUATION LIST                             *******
+********************************************************************/
 const rootHandler = ( req: Request, res: Response ) => {
   // res.send( { message: 'list of eval API' } );
   EvalModel
@@ -23,7 +25,9 @@ const rootHandler = ( req: Request, res: Response ) => {
 };
 evaluationRouter.get( '/', rootHandler );
 
-// DISPLAY EVALUATION WITH ID
+/*******************************************************************
+*******  DISPLAY EVALUATION WITH ID                          *******
+********************************************************************/
 const getByIdHandler = ( req: Request, res: Response ) => {
   // res.send({ message: 'Welcome to eval by id API' });
   EvalModel
@@ -40,6 +44,9 @@ const getByIdHandler = ( req: Request, res: Response ) => {
 // evaluationRouter.get('/:id', authMiddleware, getByIdHandler);
 evaluationRouter.get( '/:id', getByIdHandler ); // PROVISOIR
 
+/*******************************************************************
+*******  CREATE EVALUATION                                   *******
+********************************************************************/
 const createHandler =  ( req: Request, res: Response ) => {
   // res.send( { message: 'Welcome to create eval API' } );
   // 1. VALIDATE MISSING FORMATION DATA FROM req.body
@@ -65,3 +72,36 @@ const createHandler =  ( req: Request, res: Response ) => {
 };
 // evaluationRouter.post( '/', authMiddleware, adminMiddleware, createHandler );
 evaluationRouter.post( '/', createHandler ); // PROVISOIR
+
+/*******************************************************************
+*******  UPDATE EVALUATION                                   *******
+********************************************************************/
+const updateHandler =  ( req: Request, res: Response ) => {
+  const evalId = Types.ObjectId( req.params.id );
+  console.log( evalId );
+  console.log(req.body);
+
+  EvalModel.findByIdAndUpdate( evalId, req.body )
+  .then( ( evals ) => res.send( { evals } ) )
+  .catch( err => mongoError( err, res ) );
+      // console.log( 'Succesfully updated eval!' );
+      // res.send( 'Succesfully updated eval!' );
+};
+// evaluationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
+evaluationRouter.post( '/:id', updateHandler ); // PROVISOIR
+
+/*******************************************************************
+*******  DELETE EVALUATION                                   *******
+********************************************************************/
+const deleteHandler =  ( req: Request, res: Response ) => {
+  const evalId = Types.ObjectId( req.params.id );
+  console.log( evalId );
+
+  EvalModel.deleteOne( { _id: evalId } )
+      .then( ( evals ) => res.send( { evals } ) )
+      .catch( err => mongoError( err, res ) );
+      // console.log( 'Succesfully deleted eval!' );
+      // res.send( 'Succesfully deleted eval!' );
+};
+// evaluationRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
+evaluationRouter.delete( '/:id', deleteHandler ); // PROVISOIR

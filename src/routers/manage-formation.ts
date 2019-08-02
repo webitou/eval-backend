@@ -74,40 +74,34 @@ const createHandler =  ( req: Request, res: Response ) => {
 mgmFormationRouter.post( '/', createHandler ); // PROVISOIR
 
 /*******************************************************************
-*******  UPDATE TRAINING               NOK                      *******
+*******  UPDATE EVALUATION                                   *******
 ********************************************************************/
 const updateHandler =  ( req: Request, res: Response ) => {
   const formId = Types.ObjectId( req.params.id );
-  const fieldsToUpdate: any = req.body;
   console.log( formId );
+  console.log(req.body);
 
-  const set = {};
-  for ( const key in fieldsToUpdate ) {
-    // RETURNS A BOOLEAN INDICATING WHETHER THE OBJECT HAS THE SPECIFIED PROPERTY
-    if ( fieldsToUpdate.hasOwnProperty( key ) )
-      set[ 'formations.$.' + key ] = fieldsToUpdate[ key ];
-  }
-  console.log( set );
-  MgmFormationModel.findOne( { 'formations._id': formId },
-                    { $set: set },
-                    { new: true, runValidators: true } )
-           .then( ( formations ) => res.send( { formations } ) )
-           .catch( err => mongoError( err, res ) );
+  MgmFormationModel.findByIdAndUpdate( formId, req.body )
+  .then( ( formations ) => res.send( { formations } ) )
+  .catch( err => mongoError( err, res ) );
+      // console.log( 'Succesfully updated formation!' );
+      // res.send( 'Succesfully updated formation!' );
 };
-// formationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
+// mgmFormationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
 mgmFormationRouter.post( '/:id', updateHandler ); // PROVISOIR
 
 /*******************************************************************
 *******  DELETE TRAINING                                     *******
 ********************************************************************/
-mgmFormationRouter.delete( '/:id', ( req: Request, res: Response ) => {
-
+const deleteHandler =  ( req: Request, res: Response ) => {
   const formId = Types.ObjectId( req.params.id );
-  // const formId = '5d3eb79394c95443e1b4340f';
   console.log( formId );
 
   MgmFormationModel.deleteOne( { _id: formId } )
       .then( ( formations ) => res.send( { formations } ) )
       .catch( err => mongoError( err, res ) );
-      console.log( 'Deleted formation' );
-});
+      // console.log( 'Succesfully deleted formation!' );
+      // res.send( 'Succesfully deleted formation!' );
+};
+// mgmFormationRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
+mgmFormationRouter.delete( '/:id', deleteHandler ); // PROVISOIR
