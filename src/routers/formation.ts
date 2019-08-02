@@ -9,7 +9,7 @@ import {
   mongoError
 } from '../helpers';
 import { UserModel } from '../models';
-import { escapeRegExp } from '../helpers/regexp';
+import { escapeRegExp } from '../helpers';
 
 export const formationRouter = express.Router();
 
