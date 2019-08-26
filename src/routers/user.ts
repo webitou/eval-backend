@@ -6,10 +6,60 @@ import {
   httpError400,
   httpError401,
   httpError404,
-  mongoError
+  mongoError,
+  httpError500
 } from '../helpers/http';
 
 export const userRouter = express.Router();
+
+/*******************************************************************
+*******  DISPLAY USERS LIST                                  *******
+********************************************************************/
+const rootHandler = ( req: Request, res: Response ) => {
+  // res.send( { message: 'list of user API' } );
+  UserModel
+    .find()
+    .then( users => res.send( { users } ) )
+    .catch( err => httpError500( 'Cannot retrieve Users', err ) );
+};
+userRouter.get( '/', rootHandler );
+
+/*******************************************************************
+*******  GET USER BY ID                                      *******
+********************************************************************/
+const getByIdHandler = ( req: Request, res: Response ) => {
+  UserModel
+    // .findById( Types.ObjectId( req.param( 'id' ) ) )
+    .findById ( Types.ObjectId( req.params.id ) )
+    .then( user => {
+      if ( user )
+        res.send( { user } );
+      else
+        // res.status( 404 ).send( httpError404( `Formation not found with id ${ req.param( 'id' ) }` ) );
+        res.status( 404 ).send( httpError404( `user not found with id ${ req.params.id }` ) );
+    })
+    // .catch(err => httpError500( `Cannot retrieve formation with id ${ req.param( 'id' ) }`, err ) );
+    .catch(err => httpError500( `Cannot retrieve user with id ${ req.params.id }`, err ) );
+};
+// userRouter.get('/:id', authMiddleware, getByIdHandler);
+userRouter.get( '/:id', getByIdHandler );
+
+/*******************************************************************
+*******  UPDATE USER                                         *******
+********************************************************************/
+const updateHandler =  ( req: Request, res: Response ) => {
+  const userId = Types.ObjectId( req.params.id );
+  console.log( userId );
+  console.log(req.body);
+
+  UserModel.findByIdAndUpdate( userId, req.body )
+  .then( ( users ) => res.send( { users } ) )
+  .catch( err => mongoError( err, res ) );
+      // console.log( 'Succesfully updated eval!' );
+      // res.send( 'Succesfully updated eval!' );
+};
+// userRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
+userRouter.post( '/:id', updateHandler ); // PROVISOIR
 
 /*******************************************************************
 *******  ADD A TRAINING FROM A USER                          *******

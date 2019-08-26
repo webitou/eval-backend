@@ -25,6 +25,7 @@ export interface IUser {
   password: string;
   fullname: string;
   lastLogin: number;
+  language: string;
   admin: boolean;
   course: {
     reference: String,
@@ -65,6 +66,11 @@ const userSchema = new Schema<IUserDoc>({
     required: true,
     minLength: 2,
     maxLength: 100,
+  },
+  language: {
+    type: String,
+    required: true,
+    minlength: 2
   },
   lastLogin: {
     type: Number,
