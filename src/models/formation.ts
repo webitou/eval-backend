@@ -55,7 +55,7 @@ import { ValidateInteger } from '../helpers';
       type: Number,
       required: true,
       min: 0,
-      max: 6,
+      max: 8,
       validate: [ ValidateInteger, 'Day week must be an interger' ]
     },
     confirm: {    // The administrator must confirm for the user to be able to make the evaluation
