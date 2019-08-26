@@ -103,7 +103,9 @@ database
           //   "reference": "reference formation",
           //   "dateStart": "2019-08-04",
           //   "dateEnd": "2019-08-28",
-          //   "dayWeek": 2
+          //   "dayWeek": 2,
+          //   "timeStart": "18:00",
+          //   "timeEnd": "22:00"
           // }
   // UPDATE FORM  - POST/ http://localhost:8080/api/v1/mgm-formation/[FormId]
           // {
@@ -111,7 +113,9 @@ database
           //   "reference": "reference formation",
           //   "dateStart": "2019-08-04",
           //   "dateEnd": "2019-08-28",
-          //   "dayWeek": 2
+          //   "dayWeek": 2,
+          //   "timeStart": "18:00",
+          //   "timeEnd": "22:00"
           // }
   // DELETE FORM  - DELETE/ http://localhost:8080/api/v1/mgm-formation/[FormId]
 
@@ -125,7 +129,9 @@ database
           //   "reference": "reference formation",
           //   "dateStart": "2019-08-04",
           //   "dateEnd": "2019-08-28",
-          //   "dayWeek": 2
+          //   "dayWeek": 2,
+          //   "timeStart": "18:00",
+          //   "timeEnd": "22:00"
           // }
   // UPDATE FORM   - PUT/  http://localhost:8080/api/v1/users/[UserId]/formations/[FormId]
           // {
