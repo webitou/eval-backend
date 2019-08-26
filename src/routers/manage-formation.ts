@@ -61,12 +61,16 @@ const createHandler =  ( req: Request, res: Response ) => {
         res.status( 400 ).send( httpError400( 'Formation already exists' ) );
         return;
       }
-  // 3. CREATE MODEL INSTANCE USING req.body
-  // VERIF ADMIN
+      // 3. CREATE MODEL INSTANCE USING req.body
+      // VERIF ADMIN
       req.body.admin = false;
       const newFormation = new MgmFormationModel( req.body );
-  // 4. SAVE AND MANAGE VALIDATION ERRORS
+      // 4. SAVE AND MANAGE VALIDATION ERRORS
       return newFormation.save();
+    })
+    .then(formation => {
+      // pas oublier la reponse final
+      res.status( 200 ).json( {formation} );
     })
     .catch( err => mongoError( err, res ) );
 };
