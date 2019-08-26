@@ -13,6 +13,13 @@ export interface IMgmFormation {
   dateStart: Date;
   dateEnd: Date;
   dayWeek: number;
+  timeStart: string;
+  timeEnd: string;
+  teacher: string;
+  description: string;
+  objectif: string;
+  content: string;
+  prerequisites: string;
 }
 
 // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
@@ -49,8 +56,36 @@ const mgmFormationSchema = new Schema< IMgmFormationDoc >( {
     type: Number,
     required: true,
     min: 0,
-    max: 6,
+    max: 8,
     validate: [ ValidateInteger, 'Day week must be an interger' ]
+  },
+  timeStart: {
+    type: String,
+    required: true,
+  },
+  timeEnd: {
+    type: String,
+    required: true,
+  },
+  teacher: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  objectif: {
+    type: String,
+    required: false
+  },
+  content: {
+    type: String,
+    required: false
+  },
+  prerequisites: {
+    type: String,
+    required: false
   }
 });
 mgmFormationSchema.index( { reference: 1 }, { unique: true } );
