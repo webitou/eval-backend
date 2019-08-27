@@ -6,6 +6,7 @@ import {
   httpError401,
   mongoError
 } from '../helpers/http';
+import { authMiddleware } from '../middlewares';
 
 export const authRouter = express.Router();
 
@@ -75,3 +76,9 @@ const signupHandler = ( req: Request, res: Response ) => {
     .catch( err => mongoError( err, res ) );
 };
 authRouter.post( '/signup', signupHandler );
+authRouter.get('/isAuth', [authMiddleware], (req, res) => {
+  // if blablabla
+      res.send({ auth: true, user: req.tokenPayload });
+  // // else
+  //     res.status(401).send(http_1.httpError401('You are not logged in...'));
+});
