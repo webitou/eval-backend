@@ -62,6 +62,20 @@ const updateHandler =  ( req: Request, res: Response ) => {
 userRouter.post( '/:id', updateHandler ); // PROVISOIR
 
 /*******************************************************************
+*******  DELETE USER                                         *******
+********************************************************************/
+const deleteHandler =  ( req: Request, res: Response ) => {
+  const userId = Types.ObjectId( req.params.id );
+  console.log( userId );
+
+  UserModel.deleteOne( { _id: userId } )
+      .then( ( user ) => res.send( { user } ) )
+      .catch( err => mongoError( err, res ) );
+};
+// userRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
+userRouter.delete( '/:id', deleteHandler ); // PROVISOIR
+
+/*******************************************************************
 *******  ADD A TRAINING FROM A USER                          *******
 ********************************************************************/
 userRouter.post( '/:id/formations', ( req: Request, res: Response ) => {
