@@ -17,13 +17,15 @@ export const mgmFormationRouter = express.Router();
 *******  LIST FORMATIONS                                     *******
 ********************************************************************/
 const rootHandler = ( req: Request, res: Response ) => {
+  // get user info:
+  // console.log('XXXXXX', (req as any).tokenPayload);
+
   MgmFormationModel
     .find()
     .then( formations => res.send( { formations } ) )
     .catch(err => httpError500( 'Cannot retrieve formations', err ) );
 };
-// formationRouter.get('/', authMiddleware, rootHandler);
-mgmFormationRouter.get( '/', rootHandler ); // PROVISOIR
+mgmFormationRouter.get( '/', rootHandler );
 
 /*******************************************************************
 *******  GET FORMATION BY ID                                 *******

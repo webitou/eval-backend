@@ -20,6 +20,17 @@ export interface IMgmFormation {
   objectif: string;
   content: string;
   prerequisites: string;
+  evals: [
+    {
+      userId: String,
+      ratting: [
+        {
+          q_index: Number,
+          r_value: Number
+        }
+      ]
+    }
+   ]
 }
 
 // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE
@@ -86,7 +97,17 @@ const mgmFormationSchema = new Schema< IMgmFormationDoc >( {
   prerequisites: {
     type: String,
     required: false
-  }
+  },
+  evals: [ new Schema({
+      userId: {type: String, required: true},
+      ratting: [
+        {
+          q_index: Number,
+          r_value: Number
+        }
+      ]
+    })
+   ]
 });
 mgmFormationSchema.index( { reference: 1 }, { unique: true } );
 
