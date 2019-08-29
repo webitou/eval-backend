@@ -30,7 +30,7 @@ export interface IMgmFormation {
         }
       ]
     }
-   ]
+   ];
 }
 
 // DOCUMENT INTERFACE, DEFINE CUSTOM METHODS HERE

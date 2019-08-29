@@ -44,8 +44,7 @@ const getByIdHandler = ( req: Request, res: Response ) => {
     // .catch(err => httpError500( `Cannot retrieve formation with id ${ req.param( 'id' ) }`, err ) );
     .catch(err => httpError500( `Cannot retrieve formation with id ${ req.params.id }`, err ) );
 };
-// formationRouter.get('/:id', authMiddleware, getByIdHandler);
-mgmFormationRouter.get( '/:id', getByIdHandler ); // PROVISOIR
+mgmFormationRouter.get( '/:id', getByIdHandler );
 
 /*******************************************************************
 *******  ADD FORMATION                                       *******
@@ -76,11 +75,11 @@ const createHandler =  ( req: Request, res: Response ) => {
     })
     .catch( err => mongoError( err, res ) );
 };
-// formationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
-mgmFormationRouter.post( '/', createHandler ); // PROVISOIR
+mgmFormationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
+// mgmFormationRouter.post( '/', createHandler ); // PROVISOIR
 
 /*******************************************************************
-*******  UPDATE EVALUATION                                   *******
+*******  UPDATE FORMATION                                    *******
 ********************************************************************/
 const updateHandler =  ( req: Request, res: Response ) => {
   const formId = Types.ObjectId( req.params.id );
@@ -93,8 +92,8 @@ const updateHandler =  ( req: Request, res: Response ) => {
       // console.log( 'Succesfully updated formation!' );
       // res.send( 'Succesfully updated formation!' );
 };
-// mgmFormationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
-mgmFormationRouter.post( '/:id', updateHandler ); // PROVISOIR
+mgmFormationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
+// mgmFormationRouter.post( '/:id', updateHandler ); // PROVISOIR
 
 /*******************************************************************
 *******  DELETE TRAINING                                     *******
@@ -109,5 +108,22 @@ const deleteHandler =  ( req: Request, res: Response ) => {
       // console.log( 'Succesfully deleted formation!' );
       // res.send( 'Succesfully deleted formation!' );
 };
-// mgmFormationRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
-mgmFormationRouter.delete( '/:id', deleteHandler ); // PROVISOIR
+mgmFormationRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
+// mgmFormationRouter.delete( '/:id', deleteHandler ); // PROVISOIR
+
+/*******************************************************************
+*******  ADD EVAL TO FORMATION                               *******
+********************************************************************/
+const updateEvalHandler =  ( req: Request, res: Response ) => {
+  const formId = Types.ObjectId( req.params.id );
+  console.log( formId );
+  console.log(req.body);
+
+  MgmFormationModel.findByIdAndUpdate( formId, req.body )
+  .then( ( formations ) => res.send( { formations } ) )
+  .catch( err => mongoError( err, res ) );
+      // console.log( 'Succesfully updated formation!' );
+      // res.send( 'Succesfully updated formation!' );
+};
+// mgmFormationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
+mgmFormationRouter.post( '/:id/eval', updateEvalHandler ); // PROVISOIR
