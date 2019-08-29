@@ -75,8 +75,8 @@ const createHandler =  ( req: Request, res: Response ) => {
     })
     .catch( err => mongoError( err, res ) );
 };
-mgmFormationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
-// mgmFormationRouter.post( '/', createHandler ); // PROVISOIR
+// mgmFormationRouter.post('/', authMiddleware, adminMiddleware, createHandler);
+mgmFormationRouter.post( '/', createHandler ); // PROVISOIR
 
 /*******************************************************************
 *******  UPDATE FORMATION                                    *******
@@ -92,8 +92,8 @@ const updateHandler =  ( req: Request, res: Response ) => {
       // console.log( 'Succesfully updated formation!' );
       // res.send( 'Succesfully updated formation!' );
 };
-mgmFormationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
-// mgmFormationRouter.post( '/:id', updateHandler ); // PROVISOIR
+// mgmFormationRouter.post('/', authMiddleware, adminMiddleware, updateHandler);
+mgmFormationRouter.post( '/:id', updateHandler ); // PROVISOIR
 
 /*******************************************************************
 *******  DELETE TRAINING                                     *******
@@ -108,8 +108,8 @@ const deleteHandler =  ( req: Request, res: Response ) => {
       // console.log( 'Succesfully deleted formation!' );
       // res.send( 'Succesfully deleted formation!' );
 };
-mgmFormationRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
-// mgmFormationRouter.delete( '/:id', deleteHandler ); // PROVISOIR
+// mgmFormationRouter.delete('/', authMiddleware, adminMiddleware, deleteHandler);
+mgmFormationRouter.delete( '/:id', deleteHandler ); // PROVISOIR
 
 /*******************************************************************
 *******  ADD EVAL TO FORMATION                               *******
